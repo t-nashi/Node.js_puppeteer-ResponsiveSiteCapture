@@ -11,16 +11,25 @@ const fs = require("fs");																	// node.jsでファイル出力する�
 //-------------------------------------------------------------
 const readFilePath = '_targetSiteUrls.txt'	// アクセスするURL一覧のテキスト
 
-const headlessBoolean = false							// 動作確認するためheadlessモードにしない（true: ブラウザの動きを見せない、false: ブラウザの動きを見せる）
+const headlessBoolean = true							// 動作確認するためheadlessモードにしない（true: ブラウザの動きを見せない、false: ブラウザの動きを見せる）
 const headlessNum = 10										// 動作確認しやすいようにpuppeteerの操作を遅延させる
 const viewportHeight = 1200								// アクセスした際のページの高さ設定 ※ページに合わせて再設定される
 let viewportWidth = 1200									// アクセスした際のページの横幅設定
 
+
+const pageWaitingTime = 5000							// ページの待ち時間
+
+// ◆ 1つ分
+// const arrWidth = [375]
+// const arrDevices = ['iPhone 8']
+
+// ◆ 3つ分
 const arrWidth = [375, 768, 1600]
 const arrDevices = ['iPhone 8', 'iPad', '-']
-// https://github.com/GoogleChrome/puppeteer/issues/2980
-// https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js
-// https://flaviocopes.com/puppeteer/
+	// └ Devices list
+	// https://github.com/GoogleChrome/puppeteer/issues/2980
+	// https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js
+	// https://flaviocopes.com/puppeteer/
 
 const googleLogin = false // googleログイン処理を有効にするかどうか
 const googleLoginURL = '※※※Googleログイン用URL※※※'
@@ -58,7 +67,7 @@ async function scrollToBottom(page, viewportHeight) {
 	await page.evaluate(function (scrollTo) {
 		return Promise.resolve(window.scrollTo(0, scrollTo))
 	}, nextPosition)
-	await page.waitForNavigation({waitUntil: 'networkidle2', timeout: 5000})
+	await page.waitForNavigation({waitUntil: 'networkidle2', timeout: pageWaitingTime})
 				.catch(e => console.log('timeout exceed. proceed to next operation'));
 
 	currentPosition = nextPosition;
@@ -109,7 +118,7 @@ async function scrollToBottom(page, viewportHeight) {
 	if(googleLogin){
 		// 01. サイトにアクセス
 		await page.goto(googleLoginURL);
-		await page.waitForNavigation({waitUntil: 'networkidle2', timeout: 5000})
+		await page.waitForNavigation({waitUntil: 'networkidle2', timeout: pageWaitingTime})
 				.catch(e => console.log('timeout exceed. proceed to next operation'));
 
 		// 02. email
@@ -173,8 +182,8 @@ async function scrollToBottom(page, viewportHeight) {
 			// ※※※最終目的処理（ページアクセス → ページの高さ取得 → ページの全体キャプチャ）
 			// -------------------- start（処理開始）
 			await page.goto(arrUrls[i]);
-			await page.waitForNavigation({waitUntil: 'networkidle2', timeout: 5000})
-					.catch(e => console.log('timeout exceed. proceed to next operation'));
+			// await page.waitForNavigation({waitUntil: 'networkidle2', timeout: pageWaitingTime})
+			// 		.catch(e => console.log('timeout exceed. proceed to next operation'));
 			await scrollToBottom(page, viewportHeight)
 			await page.screenshot({path: saveFileName, fullPage: true})
 			// -------------------- end（処理終了）
