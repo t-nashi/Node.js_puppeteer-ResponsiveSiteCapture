@@ -19,28 +19,70 @@ let viewportWidth = 1200									// アクセスした際のページの横幅�
 
 const pageWaitingTime = 5000							// ページの待ち時間
 
-// ◆ 1つ分
-// const arrWidth = [375]
-// const arrDevices = ['iPhone 8']
+// ** 対象のデバイスの種類を選択・コメントを解除 - start *****
+const selectTargetDevicesType = 'typeG'
+let arrWidth
+let arrDevices
+switch(selectTargetDevicesType) {
+	// ◆ 1つ分 - SP
+	case 'typeA':
+		arrWidth = [375]
+		arrDevices = ['iPhone 8']
+		break;
 
-// ◆ 3つ分
-const arrWidth = [375, 768, 1600]
-const arrDevices = ['iPhone 8', 'iPad', '-']
-	// └ Devices list
+	// ◆ 1つ分 - Tablet
+	case 'typeB':
+		arrWidth = [768]
+		arrDevices = ['iPad']
+		break;
+
+	// ◆ 1つ分 - PC
+	case 'typeC':
+		arrWidth = [1600]
+		arrDevices = ['PC']
+		break;
+
+	// ◆ 2つ分 - SP & Tablet
+	case 'typeD':
+		arrWidth = [375, 768]
+		arrDevices = ['iPhone 8', 'iPad']
+		break;
+
+	// ◆ 2つ分 - Tablet & PC
+	case 'typeE':
+		arrWidth = [768, 1600]
+		arrDevices = ['iPad', 'PC']
+		break;
+
+	// ◆ 2つ分 - SP & PC
+	case 'typeF':
+		arrWidth = [375, 1600]
+		arrDevices = ['iPhone 8', 'PC']
+		break;
+
+	// ◆ 3つ分
+	case 'typeG':
+		arrWidth = [375, 768, 1600]
+		arrDevices = ['iPhone 8', 'iPad', 'PC']
+		break;
+}
+// ** 対象のデバイスの種類を選択・コメントを解除 - end *****
+
+	// ▼ 参考： Devices list
 	// https://github.com/GoogleChrome/puppeteer/issues/2980
 	// https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js
 	// https://flaviocopes.com/puppeteer/
 
 const googleLogin = false // googleログイン処理を有効にするかどうか
-const googleLoginURL = '※※※Googleログイン用URL※※※'
-const googleLoginID = 'googleLoginID'
-const googleLoginPW = 'googleLoginPW'
-const timeInterval1 = 3000	// ID入力後
-const timeInterval2 = 10000	// 2段階認証前
+	const googleLoginURL = '※※※Googleログイン用URL※※※'
+	const googleLoginID = 'googleLoginID'
+	const googleLoginPW = 'googleLoginPW'
+	const timeInterval1 = 3000	// ID入力後
+	const timeInterval2 = 10000	// 2段階認証前
 
 const basicAuthentication = false // ベーシック認証処理を有効にするかどうか
-const basicLoginID = 'basicLoginID'
-const basicLoginPW = 'basicLoginPW'
+	const basicLoginID = 'basicLoginID'
+	const basicLoginPW = 'basicLoginPW'
 
 let getTime = ''
 let saveFileName = ''
@@ -99,7 +141,6 @@ async function scrollToBottom(page, viewportHeight) {
 	// ユーザーエージェント
 	// await page.setUserAgent('bot')
 	// await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1');
-
 
 	// 画面の大きさ設定（Chromeのウィンドウ自体の大きさの調整ではない）
 	// await page.setViewport({width: 1600, height: 950})
@@ -167,17 +208,14 @@ async function scrollToBottom(page, viewportHeight) {
 			saveFileName = getTime + '_No' + (i+1) + '_' + j + extension
 
 			// デバイスセット or サイズ指定
-			if(1<j){
-				// widthセット
+			if(arrDevices[j]=='PC'){
+				// widthセット（PCのようにサイズ指定したい時用）
 				page.setViewport({width: arrWidth[j], height: viewportHeight})
 			} else {
 				// デバイス適用する場合
 				const devices = puppeteer.devices[arrDevices[j]];
 				await page.emulate(devices);
 			}
-
-			// サイズ指定のみの時はこちらを活用
-			// page.setViewport({width: arrWidth[j], height: viewportHeight})
 
 			// ※※※最終目的処理（ページアクセス → ページの高さ取得 → ページの全体キャプチャ）
 			// -------------------- start（処理開始）
