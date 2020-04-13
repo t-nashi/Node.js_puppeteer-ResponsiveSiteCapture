@@ -1,0 +1,2 @@
+https://www.google.com/	getContents01_google.txt	input.gLFyf	.g .r	innerHTML
+https://www.koreyome.com/	getContents02_koreyome.txt	#s	.entry-title a	textContent
