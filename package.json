@@ -1,24 +1,20 @@
 {
-	"name": "webpack-starter-kit-201902",
-	"version": "0.0.0",
+	"name": "node.js_puppeteer-responsive-site-capture",
+	"version": "1.0.0",
 	"private": true,
-	"description": "webpack環境構築",
-	"main": "index.js",
+	"description": "指定URLのキャプチャーが撮れる、要素の取得ができる、指定URLの状態が確認できる",
+	"main": "@capture-start.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "webpack-dev-server",
-		"dev": "webpack --mode development",
-		"watch": "webpack --mode development --watch",
-		"build": "webpack --mode production",
-		"build-config": "webpack --config webpack.config.js"
+		"start": "node @capture-start.js",
+		"get-html": "node @get-html.js",
+		"get-status": "node @get-status.js"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@xxxxxxxxxx"
+		"url": "https://github.com/t-nashi/Node.js_puppeteer-ResponsiveSiteCapture.git"
 	},
-	"homepage": "xxxxxxxxxx",
-	"keywords": [],
-	"author": "t-nashi",
+	"keywords": ["puppeteer", "get-html", "get-status"],
+	"author": "Tsutomu Takanashi <ts.works74@gmail.com> (https://www.koreyome.com/)",
 	"license": "MIT",
 	"devDependencies": {
 		"date-utils": "^1.2.21",

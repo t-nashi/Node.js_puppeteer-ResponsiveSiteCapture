@@ -20,7 +20,7 @@ let viewportWidth = 1200									// アクセスした際のページの横幅�
 const pageWaitingTime = 5000							// ページの待ち時間
 
 // ** 対象のデバイスの種類を選択・コメントを解除 - start *****
-const selectTargetDevicesType = 'typeG'
+const selectTargetDevicesType = 'typeA'
 let arrWidth
 let arrDevices
 switch(selectTargetDevicesType) {
